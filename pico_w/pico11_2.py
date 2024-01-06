@@ -3,16 +3,16 @@ import time
 from machine import WDT,Timer,ADC,RTC
 import urequests as requests
 
+ssid = 'jackal16888'
+password = '77078615'
+
+wlan = network.WLAN(network.STA_IF)
+wlan.active(True)
+wlan.connect(ssid, password)
+wlan.config(pm = 0xa11140)
+
 def connect():
-    # enable station interface and connect to WiFi access point
-    nic = network.WLAN(network.STA_IF)
-    nic.active(True)
-    nic.connect('jackal16888', '77078615')
-    # now use sockets as usual
-
     max_wait = 10
-
-    #處理正在連線
     while max_wait > 0:
         max_wait -= 1
         status = nic.status()
@@ -45,9 +45,12 @@ def alert(t:float):
     minutes = date_tuple[5]
     second = date_tuple[6]
     date_str = f'{year}-{month}-{day} {hour}:{minutes}:{second}'
-    response = requests.get(f'https://hook.us1.make.com/i4ugu7ld4cnw92gzg1to7hc2vhsnlrty?name=pico我家牛排&date={date_str}&temperature={t}')
-    print(help(response))
-    response.close()
+    try:
+        response = requests.get(f'https://hook.us1.make.com/i4ugu7ld4cnw92gzg1to7hc2vhsnlrty?name=pico我家牛排&date={date_str}&temperature={t}')
+    except:
+        reconnect()
+    else:
+        response.close()
     
 def callback1(t:Timer):
     global start
