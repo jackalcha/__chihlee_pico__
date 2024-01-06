@@ -1,6 +1,7 @@
 import network
 import time
 from machine import WDT,Timer,ADC
+import urequests as requests
 
 def connect():
     # enable station interface and connect to WiFi access point
@@ -37,6 +38,9 @@ def connect():
 
 def alert():
     print('要爆炸了!')
+    response = requests.get('https://hook.us1.make.com/i4ugu7ld4cnw92gzg1to7hc2vhsnlrty?name=pico&date=20240106&temperature=25.6')
+    print(help(response))
+    response.close()
     
 def callback1(t:Timer):
     global start
@@ -57,4 +61,4 @@ start = time.ticks_ms() - 60 * 1000 #應用程式啟動時,計時時間,先減60
 time1 = Timer()
 time1.init(period=1000,callback=callback1)
 
-
+#https://hook.us1.make.com/i4ugu7ld4cnw92gzg1to7hc2vhsnlrty
