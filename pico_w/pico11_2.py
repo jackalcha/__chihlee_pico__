@@ -1,37 +1,7 @@
-import network
-import time
-from machine import WDT,Timer,ADC,RTC
 import urequests as requests
-
-ssid = 'jackal16888'
-password = '77078615'
-
-wlan = network.WLAN(network.STA_IF)
-wlan.active(True)
-wlan.connect(ssid, password)
-wlan.config(pm = 0xa11140)
-
-def connect():
-    max_wait = 10
-    while max_wait > 0:
-        max_wait -= 1
-        status = nic.status()
-        if status < 0 or status >=3:
-            break
-        print("等待連線")
-        time.sleep(1)
-
-        
-    #沒有wifi的處理
-    if nic.status() != 3:
-        #連線失敗,重新開機
-        #wdt = WDT(timeout=2000)
-        #wdt.feed()
-        raise RuntimeError('連線失敗')
-        
-    else:
-        print("成功連線")
-        print(nic.ifconfig())
+from tools import connect,reconnect
+from machine import WDT,Timer,ADC,RTC
+import time
 
 
 def alert(t:float):
@@ -45,11 +15,17 @@ def alert(t:float):
     minutes = date_tuple[5]
     second = date_tuple[6]
     date_str = f'{year}-{month}-{day} {hour}:{minutes}:{second}'
+    get_url = f'https://hook.us1.make.com/i4ugu7ld4cnw92gzg1to7hc2vhsnlrty?name=pico我家牛排&date={date_str}&temperature={t}'
     try:
-        response = requests.get(f'https://hook.us1.make.com/i4ugu7ld4cnw92gzg1to7hc2vhsnlrty?name=pico我家牛排&date={date_str}&temperature={t}')
+        response = requests.get(get_url)
     except:
         reconnect()
     else:
+        if response.status_code == 200:
+            print("傳送成功")
+        else:
+            print("server有錯誤訊息")
+            print(f'status_code:{response.status_code}')
         response.close()
     
 def callback1(t:Timer):
