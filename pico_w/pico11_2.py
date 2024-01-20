@@ -1,4 +1,4 @@
-import urequests as requests
+import urequests as requests #http連線
 from tools import connect,reconnect
 from machine import WDT,Timer,ADC,RTC
 import time
