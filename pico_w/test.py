@@ -1,5 +1,11 @@
-from machine import Pin
+from machine import Pin, PWM, ADC
 
-red_led = Pin(15,mode=Pin.OUT)
+pwm = PWM(Pin(15))
+adc = ADC(Pin(27))
 
-red_led.value(0)
+pwm.freq(1000)
+
+while True:
+	duty = adc.read_u16()
+	pwm.duty_u16(duty)
+

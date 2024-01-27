@@ -1,6 +1,37 @@
-from machine import Timer,Pin
+from machine import Timer,Pin,ADC
+import time
+from tools import connect,reconnect
+import urequests as requests
 
-def fun10(t:Timer):
-    print('10秒了')
 
-timer10 = Timer(period=3000, mode=Timer.PERIODIC, callback=fun10)
+def fun10(t:Timer | None = None):
+    light_value = light.read_u16()
+    vr_value = vr.read_u16()
+    url = f'https://blynk.cloud/external/api/batch/update?token=_OgXaLhGv-t1s-Gw8j5I5Sr_5b-2zUov&v0={light_value}&v1={vr_value}'
+    try:
+        led.value(1)
+        response = requests.get(url)
+    except:
+        reconnect()
+    else:
+        if response.status_code == 200:
+            print("傳送成功")
+        else:
+            print("server有錯誤訊息")
+            print(f'status_code:{response.status_code}')
+        response.close()
+    led.value(0)
+        
+def fun500ms(t:Timer):
+    print(f'light:{light.read_u16()}')
+    print(f'vr:{vr.read_u16()}')
+    
+connect()
+
+led = Pin(15, Pin.OUT)
+light = ADC(Pin(28))
+vr = ADC(Pin(27))
+timer10 = Timer(period=10000, mode=Timer.PERIODIC, callback=fun10)
+timer500ms = Timer(period=500, mode=Timer.PERIODIC, callback=fun500ms)
+
+    
