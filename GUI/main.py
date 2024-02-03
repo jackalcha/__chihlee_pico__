@@ -1,9 +1,6 @@
 import streamlit as st
 import pandas as pd
 
-df = pd.DataFrame({
-  'first column': [1, 2, 3, 4],
-  'second column': [10, 20, 30, 40]
-})
-
-df
+st.title('Pico_W 專案')
+st.header('雞舍:red[溫度]和:blue[光線]狀態')
+st.divider()
