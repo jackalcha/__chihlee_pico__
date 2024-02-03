@@ -2,6 +2,9 @@ import requests
 import streamlit as st
 import pandas as pd
 from streamlit_autorefresh import st_autorefresh
+import dotenv,os
+
+dotenv.load_dotenv()
 
 st_autorefresh(interval=5000)
 
@@ -10,7 +13,7 @@ st.header('雞舍:red[溫度]和:blue[光線]狀態')
 st.divider()
 st.snow()
 
-url = 'https://blynk.cloud/external/api/get?token=_OgXaLhGv-t1s-Gw8j5I5Sr_5b-2zUov&v1&v0'
+url = f'https://blynk.cloud/external/api/get?token={os.environ["API_KEY"]}&v1&v0'
 
 response = requests.request("GET",url)
 if response.status_code == 200:
