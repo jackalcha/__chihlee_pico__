@@ -5,9 +5,9 @@ SQL資料庫 https://meet.google.com/ptx-fxwn-odh
 
 # 上課錄影
 
-## [2023_11_11_上午](https://youtube.com/live/d4kCf4p2T6E)
+## [2023_11_19_上午](https://youtube.com/live/d4kCf4p2T6E)
 
-## [2023_11_11_下午](https://youtube.com/live/pVvPs_qJhNY)
+## [2023_11_19_下午](https://youtube.com/live/pVvPs_qJhNY)
 
 ## [2023_11_26_上午](https://youtube.com/live/xjF-LAo4vEY)
 
